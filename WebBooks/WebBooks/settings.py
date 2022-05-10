@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+# Обновление базы данных из $DATABASE_URL
+import dj_database_url
 import os
 from pathlib import Path
 
@@ -130,3 +132,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+# Абсолютный путь к каталогу в котором collectstatic будет собирать статические файлы для развертывания
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
